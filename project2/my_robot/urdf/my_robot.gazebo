@@ -1,6 +1,22 @@
 <?xml version="1.0"?>
 <robot>
 
+  <material name="blue">
+    <color rgba="0 0 0.8 1"/>
+  </material>
+
+    <material name="Yellow">
+    <color rgba="1 1 0 1"/>
+  </material>
+
+  <material name="white">
+    <color rgba="1 1 1 1"/>
+  </material>
+
+    <material name="Orange">
+    <color rgba="${255/255} ${108/255} ${10/255} 1.0"/>
+  </material>
+
   <gazebo>
     <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
       <legacyMode>false</legacyMode>
@@ -8,9 +24,9 @@
       <updateRate>10</updateRate>
       <leftJoint>left_wheel_hinge</leftJoint>
       <rightJoint>right_wheel_hinge</rightJoint>
-      <wheelSeparation>0.4</wheelSeparation>
-      <wheelDiameter>0.2</wheelDiameter>
-      <torque>10</torque>
+      <wheelSeparation>0.2</wheelSeparation>
+      <wheelDiameter>0.4</wheelDiameter>
+      <torque>30</torque>
       <commandTopic>cmd_vel</commandTopic>
       <odometryTopic>odom</odometryTopic>
       <odometryFrame>odom</odometryFrame>
@@ -19,7 +35,7 @@
       <publishWheelJointState>false</publishWheelJointState>
       <rosDebugLevel>na</rosDebugLevel>
       <wheelAcceleration>0</wheelAcceleration>
-      <wheelTorque>5</wheelTorque>
+      <wheelTorque>20</wheelTorque>
       <odometrySource>world</odometrySource>
       <publishTf>1</publishTf>
       <publishOdomTF>true</publishOdomTF>
@@ -95,6 +111,7 @@
       </plugin>
     </sensor>
   </gazebo>
+
 
 
 </robot>

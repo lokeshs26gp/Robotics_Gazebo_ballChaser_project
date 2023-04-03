@@ -32,17 +32,22 @@ void process_image_callback(const sensor_msgs::Image img)
     Vector2Int last_white_pixel_Position = {-1,-1};
       
     for(int r=0;r<img.height;r++)
-	{
-        for(int c=0;c<img.step;c++)
+	 {
+        for(int c=0;c<img.step;c+=3)
         {
-            if(img.data[r+c*img.height] == white_pixel)
+            int pixel_index = c+r*img.step;
+
+            if(img.data[pixel_index] == white_pixel && 
+            img.data[pixel_index+1] == white_pixel && 
+            img.data[pixel_index+2] == white_pixel)
             {
+             
                 if(first_white_pixel_Position.x <0 && first_white_pixel_Position.y<0)
                 {
-                    first_white_pixel_Position = {r,c};
+                    first_white_pixel_Position = {c,r};
                 }
                 else 
-                  last_white_pixel_Position = {r,c};
+                  last_white_pixel_Position = {c,r};
             }
         }
     }
@@ -57,20 +62,20 @@ void process_image_callback(const sensor_msgs::Image img)
         mid_white_pixel_position = {mid_x,mid_y};
 
       }
-      int camera_mid_x = (int)(img.width/2);
-      int image_div_left_portion = (int)(img.width/3);
-      int image_div_right_portion = img.width - image_div_left_portion;
+      int camera_mid_x = (int)(img.step/2);
+      int image_div_left_portion = (int)(img.step/3);
+      int image_div_right_portion = img.step - image_div_left_portion;
       float linear_x =0.0f;
       float angular_z = 0.0f;
       if(mid_white_pixel_position.x <image_div_left_portion)//left
       {
          angular_z =  (float)(camera_mid_x - mid_white_pixel_position.x)/(float)camera_mid_x;
-         //ROS_INFO_STREAM( "Left - +Angular_Z:"+std::to_string(angular_z) + "("+std::to_string(image_div_left_portion)+"-->"+std::to_string(mid_white_pixel_position.x)+"-->"+std::to_string(image_div_right_portion)+")");
+        //ROS_INFO_STREAM( "Left - +Angular_Z:"+std::to_string(angular_z) + "("+std::to_string(image_div_left_portion)+"-->"+std::to_string(mid_white_pixel_position.x)+"-->"+std::to_string(image_div_right_portion)+")");
       }
       else if(mid_white_pixel_position.x >image_div_right_portion)    //right   
       {
         angular_z = (float)(camera_mid_x - mid_white_pixel_position.x)/(float)camera_mid_x;
-       // ROS_INFO_STREAM( "Right - +Angular_Z:"+std::to_string(angular_z) + "("+std::to_string(image_div_left_portion)+"-->"+std::to_string(mid_white_pixel_position.x)+"-->"+std::to_string(image_div_right_portion)+")");
+        //ROS_INFO_STREAM( "Right - +Angular_Z:"+std::to_string(angular_z) + "("+std::to_string(image_div_left_portion)+"-->"+std::to_string(mid_white_pixel_position.x)+"-->"+std::to_string(image_div_right_portion)+")");
       }
       else
       {
