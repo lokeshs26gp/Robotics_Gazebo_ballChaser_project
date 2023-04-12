@@ -30,7 +30,7 @@ void process_image_callback(const sensor_msgs::Image img)
 
     Vector2Int first_white_pixel_Position = {-1,-1};
     Vector2Int last_white_pixel_Position = {-1,-1};
-      
+    int white_count = 0;
     for(int r=0;r<img.height;r++)
 	 {
         for(int c=0;c<img.step;c+=3)
@@ -41,7 +41,7 @@ void process_image_callback(const sensor_msgs::Image img)
             img.data[pixel_index+1] == white_pixel && 
             img.data[pixel_index+2] == white_pixel)
             {
-             
+                white_count++;
                 if(first_white_pixel_Position.x <0 && first_white_pixel_Position.y<0)
                 {
                     first_white_pixel_Position = {c,r};
@@ -80,7 +80,12 @@ void process_image_callback(const sensor_msgs::Image img)
       else
       {
 
+        float fill_ratio = (float)white_count/(float)(img.width*img.height);
+        float velocity = 1.0f - fill_ratio;
         linear_x = (float)(img.height - mid_white_pixel_position.y)/(float)img.height;
+        linear_x*=velocity;
+        //ROS_INFO_STREAM(" white_count="+std::to_string(white_count) +" fill_ratio ="+std::to_string(fill_ratio) + "  velocity ="+std::to_string(velocity));
+
         //ROS_INFO_STREAM( "Forward - +linear_x:"+std::to_string(linear_x) + "("+std::to_string(image_div_left_portion)+"-->"+std::to_string(mid_white_pixel_position.x)+"-->"+std::to_string(image_div_right_portion)+")");
         
       }

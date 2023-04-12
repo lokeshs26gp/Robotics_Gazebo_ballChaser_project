@@ -315,7 +315,7 @@
 </link>
 
 <joint type="fixed" name="camera_joint">
-<origin xyz="${chassis_size_y/2} 0 ${chassis_size_z/2}" rpy="0 0 0"/>
+<origin xyz="${chassis_size_y/2} 0 0" rpy="0 0 0"/>
 <child link="camera"/>
 <parent link="chassis"/>
 <axis xyz="0 1 0" rpy="0 0 0"/>
